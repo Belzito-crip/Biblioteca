@@ -1,9 +1,10 @@
-const conectar = require('./database')
+const conexaoBanco = require ('./database');
 
 async function listarUsuarios(){
-    const conexao = await conectar();
-    const [rows] = await conexao.execute(`select * from usuario`)
-    return rows
+    const conexao = await conexaoBanco();
+    const [rows] = await conexao.execute('SELECT * FROM usuario');
+    return rows;
 }
 
-module.exports = {listarUsuarios}
+async
+module.exports = {listarUsuarios};

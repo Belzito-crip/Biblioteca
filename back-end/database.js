@@ -1,15 +1,13 @@
-const mysql = require('mysql2')
+const mysql = require('mysql2/promise')
 
-async function conectar() {
-    const conexao = mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        password: 'senai',
-        database: 'Biblioteca'
+async function conexaoBanco(){
+    const conexao = await mysql.createConnection({
+        host : 'localhost',
+        user : 'root',
+        password : 'senai',
+        database : 'biblioteca'
     })
-
     return conexao;
-
 }
 
-module.exports = { conectar }
+module.exports = conexaoBanco;
