@@ -1,6 +1,6 @@
-const express = require('express'); 
+const express = require('express');
 const bodyParser = require('body-parser');
-const {listarUsuarios} = require ('./usuario');
+const { listarUsuarios, adicionarUsuarios } = require('./usuario');
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -11,12 +11,27 @@ app.get('/', (req, res) => {
 });
 
 app.get('/usuario', async (req, res) => {
-    const [rows] = await listarUsuarios();
-    res.send(`Lista de usuários\n ${JSON.stringify(rows)}`);
+    try {
+        const rows = await listarUsuarios();
+        res.status(200).json({
+            'Lista de usuários': rows
+        });
+    } catch (e) {
+        res.status(500).json({
+            'erro': e.message
+        })
+    }
 });
-app.post('/usuario', (req, res) => {
-    let body = req.body;
-    res.send(`body: ${JSON.stringify(body)}`); 
+app.post('/usuario', async (req, res) => {
+    try {
+        let body = req.body
+        adicionarUsuarios(body)
+        res.status(201).send(`Usuário inserido`)
+    } catch (e) {
+        res.status(500).json({
+            "erro": e
+        })
+    }
 });
 app.put('/usuario', (req, res) => {
     res.send(`Atualiza usuário existente`);
@@ -25,5 +40,5 @@ app.delete('/usuario', (req, res) => {
     res.send('Deleta usuário');
 });
 
- app.listen(3000); 
+app.listen(3000);
 //  http://localhost:3000/usuario
