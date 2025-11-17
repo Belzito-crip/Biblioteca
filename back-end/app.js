@@ -25,6 +25,7 @@ app.get('/usuario', async (req, res) => {
 app.post('/usuario', async (req, res) => {
     try {
         let body = req.body
+        console.log(body)
         adicionarUsuarios(body)
         res.status(201).send(`Usuário inserido`)
     } catch (e) {
