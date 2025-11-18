@@ -34,7 +34,13 @@ async function atualizarUser(id, data) {
 }
 
 async function deletaUser(id) {
-    
+    try {
+        const conexao = await conexaoBanco()
+        await conexao.execute(`DELETE FROM biblioteca.usuario WHERE (idusuario = ?)`, [id])
+        return
+    } catch (e) {
+        throw new Error(`Aconteceu algum erro para deletar o usuário ${idusuario}, no banco de dados \n\n ${e.message}`)
+    }
 }
 
-module.exports = { listarUsuarios, adicionarUsuarios, atualizarUser };
+module.exports = { listarUsuarios, adicionarUsuarios, atualizarUser, deletaUser };

@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { listarUsuarios, adicionarUsuarios, atualizarUser } = require('./usuario');
+const { listarUsuarios, adicionarUsuarios, atualizarUser, deletaUser } = require('./usuario');
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -49,8 +49,12 @@ app.put(`/usuario/:idusuario`, async (req, res) => {
 app.delete('/usuario/:idusuario', async (req, res) => {
     try {
         const idusuario = req.params.idusuario
+        await deletaUser(idusuario)
+        res.status(200).send(`Usuário ${idusuario} Deletado`)
     } catch (e) {
-
+        res.status(500).json({
+            "erro": e.message
+        })
     }
 });
 
